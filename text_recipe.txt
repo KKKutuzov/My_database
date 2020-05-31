@@ -1,0 +1,12 @@
+chest, wood_planks, 8
+crafting_table, wood_planks, 4
+furnace, cobblestone, 8
+stick, wood_planks, 2
+torch, stick, 1, coal, 1
+coal_stick, stick 5, coal 10
+anvil, iron_block, 3, iron_ingot, 4
+axe, stick, 2, cobblestone, 3
+bucket, iron_ingots, 3,
+clock, gold_ingot, 4, redstone, 1
+fishing_rod, stick, 3, string, 2
+iron_block, iron_ingot, 9

@@ -4,24 +4,24 @@
 #include <cstdlib>
 #include <vector>
 #include <string>
+#include <stdio.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/poll.h>
+#include <netinet/in.h>
+#include <iostream>
+#include <arpa/inet.h>
+#include <netdb.h>
 
-
-class line
+struct line //The device of parts along with its name
 {
-public:
   std::string name;
   int quant;
-  line(){}
-  line(const std::string namedet,int x)
-  {
-      name = namedet;
-      quant = x;
-  }
-  line(const line &rhs)
-  {
-      name = rhs.name;
-      quant = rhs.quant;
-  }
   line& operator=(const line& rhs)
   {
       name = rhs.name;
@@ -43,7 +43,10 @@ public:
 	LinkedList& operator=(const LinkedList&); //assignment operator
 	bool insert(const line&);
 	bool remove(const line&);
-	bool search(const line&) const;
+  void printListclient(int fd) const;
+  int removepart(const line&);
+	int search(const line&) const;
+  int searchP(const line&) const; // Takes into account the number of parts returns how much is missing
 	std::vector<line> get() const;
   void printList() const;
 

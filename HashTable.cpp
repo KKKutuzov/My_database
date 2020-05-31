@@ -1,5 +1,6 @@
 #include "HashTable.h"
 #include <fstream>
+#include <iostream>
 
 int HashTable::hashFunc(const line& d) const //hash function (utilizes horner's method to prevent overflow on large strings)
 {
@@ -56,7 +57,7 @@ std::vector<line> HashTable::get() const //returns a vector of all the lines in 
 
 HashTable::HashTable() //default constructor
 {
-	arrSize=101;
+	arrSize=50023;
 	arr=new LinkedList[arrSize];
 	numOfItems=0;
 }
@@ -99,7 +100,6 @@ bool HashTable::insert(const line& s) //inserts line s if it doesn't exist in th
 	return successOrFail;
 }
 
-
 bool HashTable::remove(const line& s) //removes line s if s exist in the hash table and returns 1 if removal successful, 0 otherwise
 {
 	int hash=hashFunc(s);
@@ -107,11 +107,33 @@ bool HashTable::remove(const line& s) //removes line s if s exist in the hash ta
 	numOfItems--;
 	return successOrFail;
 }
-
-bool HashTable::search(const line& s) const //returns 1 if s exist in the hash table, 0 otherwise
+int HashTable::removepart(const line& s)
 {
 	int hash=hashFunc(s);
-	bool found=arr[hash].search(s);
+	int successOrFail;
+	try{
+			successOrFail=arr[hash].removepart(s);
+	}
+	catch(int a)
+  {
+    std::cout << "Caught exception number:  " << a << std::endl;
+    return 0;
+  }
+	if(successOrFail == 2)  numOfItems--;
+	return successOrFail;
+}
+
+int HashTable::search(const line& s) const //returns 1 if s exist in the hash table, 0 otherwise
+{
+	int hash=hashFunc(s);
+	int found=arr[hash].search(s);
+	return found;
+}
+
+int HashTable::searchP(const line &s) const
+{
+	int hash=hashFunc(s);
+	int found=arr[hash].searchP(s);
 	return found;
 }
 
@@ -141,6 +163,17 @@ void HashTable::print() const
 				}
 		}
 }
+
+void HashTable::printclient(int fd) const
+{
+		for(int i=0;i<arrSize;i++)
+		{
+				if(arr[i].front != NULL)
+				{
+						arr[i].printListclient(fd);
+				}
+		}
+}
 void HashTable::HashTableToFile(const std::string &filename_items) const
 {
 		std::ofstream ofs(filename_items);
@@ -152,7 +185,7 @@ void HashTable::HashTableToFile(const std::string &filename_items) const
 				}
 		}
 }
-
+/*
 std::vector<line> HashTable::intersection(const HashTable& h) const //returns a vector of line containing intersection of calling object's data and h's data
 {
 	std::vector<line> ret_v;
@@ -189,3 +222,4 @@ std::vector<line> HashTable::difference(const HashTable& h) const //returns a ve
             ret_v.push_back(v2[i]);
     return ret_v;
 }
+*/

@@ -1,0 +1,6 @@
+wood_planks, 30
+cobblestone, 64
+coal, 12
+iron_ingots, 200
+string, 30
+stick, 11
