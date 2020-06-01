@@ -1,5 +1,6 @@
 import socket
 import struct
+import time
 
 def getStrFromServer(sock,a):
     size = str(a)+'s'
@@ -37,6 +38,7 @@ while(1):
     a = getIntFromServer(sock)
     print("Сервер ответил:")
     for i in range(a):
+        time.sleep(0.01)
         b = getIntFromServer(sock)
         print(getStrFromServer(sock,b))
     print("Ввведите ваш запрос:")
