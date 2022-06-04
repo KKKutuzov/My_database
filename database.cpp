@@ -2,25 +2,19 @@
 #include <sstream>
 #include <algorithm>
 
-Database::Database()
-{
+Database::Database(){}
 
-}
-
-Database::Database(const std::string &filename_items, const std::string &filename_recipes)
-{
+Database::Database(const std::string &filename_items, const std::string &filename_recipes){
   std::ifstream fin;
   fin.open(filename_items);
   std::string str;
-  while(getline(fin,str))
-  {
+  while(getline(fin,str)){
       std::stringstream ss(str);
       line x;
       std::getline(ss,x.name,',');
       ss  >> x.quant;
       data.insert(x);
   }
-  //data.print();
   std::ifstream fin1;
   fin1.open(filename_recipes);
   while(getline(fin1,str))

@@ -2,43 +2,47 @@ import socket
 import struct
 import time
 
-def getStrFromServer(sock,a):
-    size = str(a)+'s'
-    packer = struct.Struct(size)
+
+def getStrFromServer(sock, a):
     data = sock.recv(a)
-    return data.decode('utf-8')
+    return data.decode("utf-8")
+
+
 def getIntFromServer(sock):
-    unpacker = struct.Struct('i')
-    data = sock.recv(unpacker.size,socket.MSG_WAITALL)
+    unpacker = struct.Struct("i")
+    data = sock.recv(unpacker.size, socket.MSG_WAITALL)
     int_val = unpacker.unpack(data)
     return int_val[0]
-def sendStrToServer(sock,z):
+
+
+def sendStrToServer(sock, z):
     k = len(z)
-    f = str(k)+'s'
-    packer = struct.Struct('i')
+    f = str(k) + "s"
+    packer = struct.Struct("i")
     packed_data = packer.pack(k)
     sock.sendall(packed_data)
     packer = struct.Struct(f)
-    packed_data = packer.pack(z.encode('utf-8'))
+    packed_data = packer.pack(z.encode("utf-8"))
     sock.sendall(packed_data)
 
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_address = ('localhost', 5555)
+server_address = ("localhost", 5555)
 sock.connect(server_address)
-print("Добро пожаловать в наше приложениие!","Напишите ваш запрос:",sep='\n')
-while(1):
+print("Добро пожаловать в наше приложениие!", "Напишите ваш запрос:", sep="\n")
+while True:
     z = input()
-    if z=="stop":
-        sendStrToServer(sock,z);
+    if z == "stop":
+        sendStrToServer(sock, z)
         break
-    if z=="exit end":
-        sendStrToServer(sock,z)
+    if z == "exit end":
+        sendStrToServer(sock, z)
         break
-    sendStrToServer(sock,z)
+    sendStrToServer(sock, z)
     a = getIntFromServer(sock)
     print("Сервер ответил:")
     for i in range(a):
         time.sleep(0.01)
         b = getIntFromServer(sock)
-        print(getStrFromServer(sock,b))
+        print(getStrFromServer(sock, b))
     print("Ввведите ваш запрос:")
